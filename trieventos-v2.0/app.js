@@ -24,11 +24,11 @@ app.use(cookieParser());
 
 const pool = new Pool(
     {
-        user: 'postgres',
-        password: 'bts',
+        user: '',
+        password: '',
         host: 'localhost',
         port: 5432,
-        database: 'postagem'
+        database: ''
     }
 );
 
@@ -50,8 +50,8 @@ function authenticateToken(req, res, next) {
     const decoded = jwt.verify(token, chave);
     req.user = decoded;
 
-    // Verificar se o usuário é do tipo 'usuario' ou 'estabelecimento'
-    if (decoded.tipo !== 'usuario' && decoded.tipo !== 'estabelecimento') {
+    // Verificar se o usuário é do tipo 'usuario'
+    if (decoded.tipo !== 'usuario' ) {
       return res.redirect('/login');
     }
 
@@ -81,29 +81,6 @@ function authenticateTokenEstabelecimentos(req, res, next) {
       return res.redirect('/login-estabelecimentos');
     }
   }
-
-/*
-function authenticateTokenU(req, res, next) {
-    const token = req.cookies.token;
-  
-    if (!token) {
-      return res.redirect('/login');
-    }
-  
-    try {
-      const decoded = jwt.verify(token, chave);
-      req.user = decoded;
-  
-      if (decoded.tipo && decoded.tipo === 'usuario') {
-        return res.redirect('/login');
-      }
-  
-      next();
-    } catch (error) {
-      return res.redirect('/login');
-    }
-  }
-*/
 
   
 app.get('/', async (req, res) => {
